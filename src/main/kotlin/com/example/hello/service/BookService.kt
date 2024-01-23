@@ -6,6 +6,7 @@ import com.example.hello.data.dto.BookResDto
 import com.example.hello.data.repository.BookRepository
 import com.example.hello.data.repository.BookshelfRepository
 import jakarta.transaction.Transactional
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.stereotype.Service
 
@@ -36,6 +37,7 @@ class BookService (
         }
     }
     // 책 가져오기
+    @Cacheable("book")
     fun findBook(id: Long): BookResDto? {
         val foundBook = bookRepository.findById(id).orElseThrow{NotFoundException()}
         return foundBook.bookshelf?.let {
